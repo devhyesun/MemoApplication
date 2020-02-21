@@ -22,5 +22,7 @@ class ImageRepository private constructor(private val imageDao: ImageDao) {
 
     fun delete(image: Image) = Single.fromCallable { imageDao.delete(image) }
 
+    fun getThumbnail(memoId: Long) = imageDao.getThumbnail(memoId)
+
     fun getImageList(memoId: Long) = imageDao.getImageList(memoId)
 }
