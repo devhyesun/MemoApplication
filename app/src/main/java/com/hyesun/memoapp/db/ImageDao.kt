@@ -15,9 +15,9 @@ interface ImageDao {
     @Delete
     fun delete(image: Image): Int
 
-    @Query("SELECT * FROM image WHERE memo_id == :memoId ORDER BY add_time DESC LIMIT 1")
-    fun getThumbnail(memoId: Long): LiveData<Image>
+    @Query("SELECT path FROM image WHERE memo_id == :memoId ORDER BY add_time LIMIT 1")
+    fun getThumbnail(memoId: Long): LiveData<String>
 
-    @Query("SELECT * FROM image WHERE memo_id == :memoId ORDER BY add_time DESC")
-    fun getImageList(memoId: Long): LiveData<List<Image>>
+    @Query("SELECT path FROM image WHERE memo_id == :memoId ORDER BY add_time DESC")
+    fun getImageList(memoId: Long): LiveData<List<String>>
 }
