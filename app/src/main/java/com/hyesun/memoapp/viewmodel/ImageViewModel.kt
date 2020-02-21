@@ -49,7 +49,8 @@ class ImageViewModel internal constructor(
         )
     }
 
-    fun thumbnailImage(memoId: Long) = imageList(memoId).value?.get(0)
+    fun thumbnail(memoId: Long) = imageRepository.getThumbnail(memoId)
+
     fun imageList(memoId: Long) = imageRepository.getImageList(memoId)
 
     override fun onCleared() {
