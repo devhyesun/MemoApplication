@@ -14,4 +14,6 @@ data class Memo(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo
     var id: Long = 0
+    @ColumnInfo(name = "date")
+    var date: Long = System.currentTimeMillis()
 }
