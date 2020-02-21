@@ -15,7 +15,7 @@ interface MemoDao {
     @Delete
     fun delete(memo: Memo): Int
 
-    @Query("SELECT * FROM memo")
+    @Query("SELECT * FROM memo ORDER BY date DESC")
     fun getAllMemo(): LiveData<List<Memo>>
 
     @Query("SELECT * FROM memo WHERE id == :id")
