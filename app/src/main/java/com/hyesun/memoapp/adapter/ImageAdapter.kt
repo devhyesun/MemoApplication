@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.hyesun.memoapp.R
 import com.hyesun.memoapp.listener.OnDeleteListener
 import kotlinx.android.synthetic.main.row_picture.view.*
@@ -29,19 +30,25 @@ class ImageAdapter(private val context: Context,
         with(holder) {
             Glide.with(context)
                 .load(Uri.parse(imagePath))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .into(ivPicture)
 
-            if(isEditable) {
-                btnDelete.visibility = View.VISIBLE
+            btnDelete.visibility = if (isEditable) {
                 btnDelete.setOnClickListener {
                     onDeleteListener?.onDelete(position)
                 }
+                View.VISIBLE
+            } else {
+                View.GONE
             }
         }
     }
 
-    fun setImagePathList(imagePathList: ArrayList<String>) {
-        this.imagePathList = imagePathList
+    fun setImagePathList(imagePathList: List<String>) {
+        this.imagePathList.clear()
+        this.imagePathList.addAll(imagePathList)
+
         notifyDataSetChanged()
     }
 
