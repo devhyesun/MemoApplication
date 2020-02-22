@@ -1,12 +1,16 @@
 package com.hyesun.memoapp.adapter
 
 import android.content.Context
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -40,12 +44,19 @@ class MemoAdapter(private val context: Context) :
 
     override fun onBindViewHolder(holder: MemoViewHolder, position: Int) {
         val memo = memoList[position]
-        val thumbnail = imageViewModel?.thumbnailImage(memo.id)
 
         with(holder) {
-            Glide.with(context)
-                .load(thumbnail)
-                .into(ivThumbnail)
+            imageViewModel?.thumbnail(memo.id)?.observe(context as LifecycleOwner,
+                Observer { thumbnail ->
+                    ivThumbnail.visibility = if (thumbnail != null) {
+                        Glide.with(context)
+                            .load(Uri.parse(thumbnail))
+                            .into(ivThumbnail)
+                        View.VISIBLE
+                    } else {
+                        View.GONE
+                    }
+                })
 
             tvTitle.text = memo.title
             tvContent.text = memo.content
