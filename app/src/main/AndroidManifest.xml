@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.NewMemoActivity" />
+        <activity android:name=".view.MemoDetailActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
