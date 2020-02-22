@@ -64,6 +64,12 @@ class MemoAdapter(private val context: Context) :
 
             tvTitle.text = memo.title
             tvContent.text = memo.content
+
+            itemView.setOnClickListener {
+                val intent = Intent(context, MemoDetailActivity::class.java)
+                intent.putExtra("memoId", memo.id)
+                context.startActivity(intent)
+            }
         }
     }
 
