@@ -9,11 +9,9 @@ interface ImageDao {
     @Insert
     fun insert(image: Image): Long
 
-    @Update
-    fun update(image: Image): Int
-
-    @Delete
-    fun delete(image: Image): Int
+    @Transaction
+    @Query("DELETE FROM image WHERE memo_id == :memoId")
+    fun delete(memoId: Long): Int
 
     @Query("SELECT path FROM image WHERE memo_id == :memoId ORDER BY add_time LIMIT 1")
     fun getThumbnail(memoId: Long): LiveData<String>

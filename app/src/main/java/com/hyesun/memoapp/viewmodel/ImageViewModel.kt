@@ -11,7 +11,7 @@ import io.reactivex.schedulers.Schedulers
 
 class ImageViewModel internal constructor(
     private val imageRepository: ImageRepository): ViewModel() {
-    private val compositeDisposable = CompositeDisposable()
+    val compositeDisposable = CompositeDisposable()
 
     fun insert(image: Image) {
         compositeDisposable.add(
@@ -25,29 +25,10 @@ class ImageViewModel internal constructor(
         )
     }
 
-    fun update(image: Image) {
-        compositeDisposable.add(
-            imageRepository.update(image)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { i -> Log.i("_hs", "memo update $i success") },
-                    { throwable -> throwable.printStackTrace() }
-                )
-        )
-    }
-
-    fun delete(image: Image) {
-        compositeDisposable.add(
-            Single.just(imageRepository.delete(image))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { i -> Log.i("_hs", "memo delete $i success") },
-                    { throwable -> throwable.printStackTrace() }
-                )
-        )
-    }
+    fun delete(memoId: Long) =
+        imageRepository.delete(memoId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
     fun thumbnail(memoId: Long) = imageRepository.getThumbnail(memoId)
 
