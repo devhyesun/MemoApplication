@@ -77,11 +77,15 @@ class MemoDetailActivity : AppCompatActivity() {
                 true
             }
             R.id.menu_delete_memo -> {
-                memoViewModel?.delete(memoId)
-                    ?.subscribe(
-                        { finish() },
-                        { ex -> ex.printStackTrace() }
+                memoViewModel?.let {
+                    it.compositeDisposable.add(
+                        it.delete(memoId)
+                            .subscribe(
+                                { finish() },
+                                { ex -> ex.printStackTrace() }
+                            )
                     )
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
