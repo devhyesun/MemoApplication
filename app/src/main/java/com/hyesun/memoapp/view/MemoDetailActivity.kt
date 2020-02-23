@@ -1,7 +1,10 @@
 package com.hyesun.memoapp.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -57,6 +60,31 @@ class MemoDetailActivity : AppCompatActivity() {
                     View.GONE
                 }
             })
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_memo_detail, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_edit_memo -> {
+                startActivity(Intent(this, NewMemoActivity::class.java).apply {
+                    putExtra("memoId", memoId)
+                })
+                true
+            }
+            R.id.menu_delete_memo -> {
+                memoViewModel?.delete(memoId)
+                    ?.subscribe(
+                        { finish() },
+                        { ex -> ex.printStackTrace() }
+                    )
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
