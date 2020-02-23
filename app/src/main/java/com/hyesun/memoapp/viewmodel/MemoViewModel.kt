@@ -26,7 +26,7 @@ class MemoViewModel internal constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
-    fun delete(memo: Memo) = memoRepository.delete(memo)
+    fun delete(id: Long) = memoRepository.delete(id)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 

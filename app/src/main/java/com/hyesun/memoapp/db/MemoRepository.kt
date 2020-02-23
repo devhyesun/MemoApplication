@@ -20,7 +20,7 @@ class MemoRepository private constructor(private val memoDao: MemoDao) {
 
     fun update(memo: Memo) = Single.fromCallable { memoDao.update(memo) }
 
-    fun delete(memo: Memo) = Single.fromCallable { memoDao.delete(memo) }
+    fun delete(id: Long) = Single.fromCallable { memoDao.delete(id) }
 
     fun getMemo(memoId: Long) = memoDao.getMemo(memoId)
 
