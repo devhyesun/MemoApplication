@@ -47,6 +47,7 @@ object Utils {
     fun goToGallery(activity: Activity, requestCode: Int) {
         activity.startActivityForResult(Intent(Intent.ACTION_GET_CONTENT).apply {
             type = MediaStore.Images.Media.CONTENT_TYPE
+            putExtra(Intent.EXTRA_MIME_TYPES, "image/*")
         }, requestCode)
     }
 
