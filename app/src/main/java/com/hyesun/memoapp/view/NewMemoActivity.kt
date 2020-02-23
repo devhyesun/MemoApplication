@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -45,6 +46,9 @@ class NewMemoActivity : AppCompatActivity(), View.OnClickListener, OnDeleteListe
     private val imagePathLiveData = MutableLiveData<ArrayList<String>>()
     private var imagePathList = ArrayList<String>()
 
+    private var memo: Memo? = null
+    private var memoId: Long = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_memo)
@@ -73,6 +77,21 @@ class NewMemoActivity : AppCompatActivity(), View.OnClickListener, OnDeleteListe
             adapter.setImagePathList(it)
         })
 
+        memoId = intent.getLongExtra("memoId", -1)
+
+        if(memoId > - 1) {
+            memoViewModel?.memo(memoId)?.observe(this, Observer {
+                memo = it
+                tietTitle.setText(it.title)
+                tietContent.setText(it.content)
+            })
+
+            imageViewModel?.imageList(memoId)?.observe(this, Observer {
+                imagePathLiveData.value = it as ArrayList<String>
+                imagePathList.addAll(it)
+            })
+        }
+
         btnAddImage.setOnClickListener(this)
         btnCancel.setOnClickListener(this)
         btnSave.setOnClickListener(this)
@@ -100,16 +119,42 @@ class NewMemoActivity : AppCompatActivity(), View.OnClickListener, OnDeleteListe
 
                 memoViewModel?.let { viewModel ->
                     viewModel.compositeDisposable.add(
-                        viewModel.insert(Memo(title, content))
-                            .subscribe(
-                                { id ->
-                                    for (path in imagePathList) {
-                                        imageViewModel?.insert(Image(path, id))
-                                    }
-                                },
-                                { exception -> exception.printStackTrace() }
-                            )
+                        memo?.let {
+                            viewModel.update(it)
+                                .subscribe(
+                                    { i ->
+                                        Log.i("_hs", "memo $i update")
+                                    },
+                                    { exception -> exception.printStackTrace() }
+                                )
+                        } ?: let {
+                            viewModel.insert(Memo(title, content))
+                                .subscribe(
+                                    { id ->
+                                        for (path in imagePathList) {
+                                            imageViewModel?.insert(Image(path, id))
+                                        }
+                                    },
+                                    { exception -> exception.printStackTrace() }
+                                )
+                        }
                     )
+                }
+
+                imageViewModel?.let { viewModel ->
+                    memo?.let {
+                        viewModel.compositeDisposable.add(
+                            viewModel.delete(memoId)
+                                .subscribe(
+                                    {
+                                        for (path in imagePathList) {
+                                            imageViewModel?.insert(Image(path, memoId))
+                                        }
+                                    },
+                                    { exception -> exception.printStackTrace() }
+                                )
+                        )
+                    }
                 }
 
                 finish()
@@ -271,3 +316,4 @@ class NewMemoActivity : AppCompatActivity(), View.OnClickListener, OnDeleteListe
         ).show()
     }
 }
+
