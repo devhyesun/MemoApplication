@@ -5,4 +5,21 @@
     <string name="str_add_picture">사진 추가</string>
     <string name="str_btn_save">저장</string>
     <string name="str_btn_cancel">취소</string>
+
+    <string name="str_require_storage_permission">사진 추가를 위해서는 카메라와 저장소 권한이 필요합니다.</string>
+
+    <string name="str_input_url">URL 입력</string>
+    <string name="str_invalid_url">유효하지 않은 URL입니다.</string>
+
+    <string name="str_ok">확인</string>
+    <string name="str_cancel">취소</string>
+
+    <string-array name="str_ways_to_add_picture">
+        <item>카메라</item>
+        <item>갤러리</item>
+        <item>URL</item>
+    </string-array>
+
+    <string name="str_menu_edit_memo">메모 수정</string>
+    <string name="str_menu_delete_memo">메모 삭제</string>
 </resources>
