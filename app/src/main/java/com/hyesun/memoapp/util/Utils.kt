@@ -55,11 +55,11 @@ object Utils {
         ((ContextCompat.checkSelfPermission(
             activity,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) != PackageManager.PERMISSION_GRANTED)
+        ) == PackageManager.PERMISSION_GRANTED)
                 && (ContextCompat.checkSelfPermission(
             activity,
             Manifest.permission.READ_EXTERNAL_STORAGE
-        ) != PackageManager.PERMISSION_GRANTED))
+        ) == PackageManager.PERMISSION_GRANTED))
 
 
     fun requestStoragePermission(activity: Activity, requestStoragePermission: Int) {
@@ -75,7 +75,7 @@ object Utils {
 
     fun checkCameraPermission(activity: Activity) =
         (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
-                != PackageManager.PERMISSION_GRANTED)
+                == PackageManager.PERMISSION_GRANTED)
 
     fun requestCameraPermission(activity: Activity, requestCameraPermission: Int) {
         ActivityCompat.requestPermissions(
