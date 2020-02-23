@@ -18,6 +18,6 @@ interface ImageDao {
     @Query("SELECT path FROM image WHERE memo_id == :memoId ORDER BY add_time LIMIT 1")
     fun getThumbnail(memoId: Long): LiveData<String>
 
-    @Query("SELECT path FROM image WHERE memo_id == :memoId ORDER BY add_time DESC")
+    @Query("SELECT path FROM image WHERE memo_id == :memoId ORDER BY add_time")
     fun getImageList(memoId: Long): LiveData<List<String>>
 }
