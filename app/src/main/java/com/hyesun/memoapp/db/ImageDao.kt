@@ -10,12 +10,12 @@ interface ImageDao {
     fun insert(image: Image): Long
 
     @Transaction
-    @Query("DELETE FROM image WHERE memo_id == :memoId")
+    @Query("DELETE FROM image WHERE memo_id = :memoId")
     fun delete(memoId: Long): Int
 
-    @Query("SELECT path FROM image WHERE memo_id == :memoId ORDER BY add_time LIMIT 1")
+    @Query("SELECT path FROM image WHERE memo_id = :memoId ORDER BY add_time LIMIT 1")
     fun getThumbnail(memoId: Long): LiveData<String>
 
-    @Query("SELECT path FROM image WHERE memo_id == :memoId ORDER BY add_time")
+    @Query("SELECT path FROM image WHERE memo_id = :memoId ORDER BY add_time")
     fun getImageList(memoId: Long): LiveData<List<String>>
 }
