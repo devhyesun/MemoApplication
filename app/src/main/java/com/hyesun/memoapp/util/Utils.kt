@@ -1,12 +1,16 @@
 package com.hyesun.memoapp.util
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import java.io.File
 import java.io.IOException
@@ -44,6 +48,43 @@ object Utils {
         activity.startActivityForResult(Intent(Intent.ACTION_GET_CONTENT).apply {
             type = MediaStore.Images.Media.CONTENT_TYPE
         }, requestCode)
+    }
+
+
+    fun checkStoragePermission(activity: Activity) =
+        ((ContextCompat.checkSelfPermission(
+            activity,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) != PackageManager.PERMISSION_GRANTED)
+                && (ContextCompat.checkSelfPermission(
+            activity,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) != PackageManager.PERMISSION_GRANTED))
+
+
+    fun requestStoragePermission(activity: Activity, requestStoragePermission: Int) {
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ),
+            requestStoragePermission
+        )
+    }
+
+    fun checkCameraPermission(activity: Activity) =
+        (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED)
+
+    fun requestCameraPermission(activity: Activity, requestCameraPermission: Int) {
+        ActivityCompat.requestPermissions(
+            activity,
+            arrayOf(
+                Manifest.permission.CAMERA
+            ),
+            requestCameraPermission
+        )
     }
 
     @SuppressLint("SimpleDateFormat")
