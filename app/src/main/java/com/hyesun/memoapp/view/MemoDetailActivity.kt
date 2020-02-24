@@ -19,10 +19,10 @@ import kotlinx.android.synthetic.main.row_memo.tvContent
 import kotlinx.android.synthetic.main.row_memo.tvTitle
 
 class MemoDetailActivity : AppCompatActivity() {
-    var memoViewModel: MemoViewModel? = null
-    var imageViewModel: ImageViewModel? = null
+    private var memoViewModel: MemoViewModel? = null
+    private var imageViewModel: ImageViewModel? = null
 
-    var memoId: Long = -1
+    private var memoId: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
