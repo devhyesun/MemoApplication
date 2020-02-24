@@ -5,10 +5,12 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.hyesun.memoapp.R
+import com.hyesun.memoapp.callback.ImageDiffCallback
 import com.hyesun.memoapp.listener.OnDeleteListener
 import kotlinx.android.synthetic.main.row_picture.view.*
 
@@ -46,10 +48,13 @@ class ImageAdapter(private val context: Context,
     }
 
     fun setImagePathList(imagePathList: List<String>) {
+        val imageDiffCallback = ImageDiffCallback(this.imagePathList, imagePathList)
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(imageDiffCallback)
+
         this.imagePathList.clear()
         this.imagePathList.addAll(imagePathList)
 
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun setOnDeleteListener(listener: OnDeleteListener) {

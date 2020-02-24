@@ -12,10 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.hyesun.memoapp.R
+import com.hyesun.memoapp.callback.MemoDiffCallback
 import com.hyesun.memoapp.db.model.Memo
 import com.hyesun.memoapp.util.InjectorUtils
 import com.hyesun.memoapp.view.MemoDetailActivity
@@ -74,9 +76,12 @@ class MemoAdapter(private val context: Context) :
     }
 
     fun setMemoList(memoList: List<Memo>) {
+        val memoDiffCallback = MemoDiffCallback(this.memoList, memoList)
+        val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(memoDiffCallback)
+
         this.memoList.clear()
         this.memoList.addAll(memoList)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     class MemoViewHolder(view: View) : RecyclerView.ViewHolder(view) {
