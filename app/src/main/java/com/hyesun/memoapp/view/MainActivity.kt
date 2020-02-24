@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
-    val memoViewModel by lazy {
+    private val memoViewModel by lazy {
         ViewModelProvider(this, InjectorUtils.provideMemoViewModelFactory(this))
             .get(MemoViewModel::class.java)
     }
